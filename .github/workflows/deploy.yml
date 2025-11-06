@@ -1,0 +1,25 @@
+name:  Deploy Automático no Nginx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name:  Limpar diretório temporário
+        run: rm -rf /var/www/html/*
+
+      - name:  Clonar repositório atualizado
+        run: git clone https://github.com/Guilhermevitor044/meu-site-cicd.git /var/www/html
+
+      - name:  Ajustar permissões
+        run: |
+          chown -R www-data:www-data /var/www/html
+          chmod -R 755 /var/www/html
+
+      - name: 🔁 Reiniciar Nginx
+        run: systemctl reload nginx
