@@ -16,6 +16,5 @@ jobs:
     - name: Atualizar site
       run: |
         cd /var/www/html
-        sudo git pull origin main
-        sudo systemctl restart nginx
+        git pull origin main
         echo "Deploy realizado com sucesso em $(date)"
