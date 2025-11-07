@@ -1,4 +1,4 @@
-name:  Deploy Automático no Nginx
+name: Deploy para VM Local
 
 on:
   push:
@@ -7,19 +7,16 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
-
+    runs-on: self-hosted  # Roda na VM local
+    
     steps:
-      - name:  Limpar diretório temporário
-        run: rm -rf /var/www/html/*
+    - name: Checkout do código
+      uses: actions/checkout@v3
 
-      - name:  Clonar repositório atualizado
-        run: git clone https://github.com/Guilhermevitor044/meu-site-cicd.git /var/www/html
-
-      - name:  Ajustar permissões
-        run: |
-          chown -R www-data:www-data /var/www/html
-          chmod -R 755 /var/www/html
-
-      - name: 🔁 Reiniciar Nginx
-        run: systemctl reload nginx
+    - name: Atualizar site
+      run: |
+        cd /var/www/html
+        sudo git fetch origin main
+        sudo git reset --hard origin/main
+        sudo systemctl restart nginx
+        echo "✅ Deploy realizado com sucesso em $(date)"
