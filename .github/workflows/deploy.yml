@@ -7,16 +7,15 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Roda na VM local
+    runs-on: self-hosted  # Roda na própria VM!
     
     steps:
     - name: Checkout do código
       uses: actions/checkout@v3
-
+    
     - name: Atualizar site
       run: |
         cd /var/www/html
-        sudo git fetch origin main
-        sudo git reset --hard origin/main
+        sudo git pull origin main
         sudo systemctl restart nginx
-        echo "✅ Deploy realizado com sucesso em $(date)"
+        echo "Deploy realizado com sucesso em $(date)"
